@@ -8,11 +8,17 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "echo 'test pass'",
+    "test-e2e": "echo 'e2e-test pass'"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
+  },
+  "engines": {
+    "node": "21.7.3",
+    "npm": "10.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

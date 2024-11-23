@@ -1,0 +1,46 @@
+name: "build"
+run-name: "${{github.actor}} is building the application - ${{github.event_name}}"
+on:
+  push:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Executing unit tests"
+        uses: actions/checkout@v4
+      - name: "Installing node"
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+      - name: "Installing dependencies"
+        run: "npm ci"
+      - name: "Linting the app"
+        run: "npm run lint"
+      - name: "Building your app"
+        run: "npm run build"
+      - name: "Testing your app"
+        run: "npm run test"
+      - name: "e2e testing"
+        run: "npm run test-e2e"
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Connecting ssh"
+        env:
+          BRANCH: ${{github.ref_name}}
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          envs: "BRANCH"
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            mkdir react-ci
+            cd react-ci
+            git clone https://github.com/MathRavs/react-ci-test.git .
+            git checkout $BRANCH
+            docker cd compose up -d --build --force-recreate prod
+            cd ..
+            rm -rf react-ci
+            
