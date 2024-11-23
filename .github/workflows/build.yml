@@ -24,7 +24,7 @@ jobs:
         run: "npm run test-e2e"
   deploy:
     needs: ["tests"]
-    if: startsWith(github.ref_name,'release-') && github.event.pull_request.merged == true
+    if: startsWith(github.event.pull_request.base.ref,'release-') && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: "Connecting ssh"
