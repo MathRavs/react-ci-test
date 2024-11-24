@@ -31,10 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.base_ref == 'prod' && github.event.pull_request.merged == true
     steps:
-      - name: 'log 1'
-        run: "echo ${{github.base_ref}}"
-      - name: 'log 2'
-        run: "echo ${{github.event.pull_request.merged}}"
       - name: "Connecting ssh"
         if: ${{!github.event.act}}
         env:
