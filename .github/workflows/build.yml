@@ -24,12 +24,11 @@ jobs:
         run: "npm run test-e2e"
   deploy:
     needs: [ "tests" ]
-    if: github.ref == 'prod' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    if: ${{github.base_ref == 'prod' && github.event.pull_request.merged}}
     steps:
-      - name: ${{github.event.pull_request.base.ref}}
-        run: "echo here"
       - name: "Connecting ssh"
+        if: ${{!github.event.act}}
         env:
           BRANCH: ${{github.ref_name}}
         uses: appleboy/ssh-action@v1.2.0
