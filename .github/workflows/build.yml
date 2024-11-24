@@ -23,10 +23,12 @@ jobs:
       - name: "e2e testing"
         run: "npm run test-e2e"
   deploy:
-    needs: ["tests"]
-    if: startsWith(github.event.pull_request.base.ref,'release-') && github.event.pull_request.merged == true
+    needs: [ "tests" ]
+    if: github.ref == 'prod' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+      - name: ${{github.event.pull_request.base.ref}}
+        run: "echo here"
       - name: "Connecting ssh"
         env:
           BRANCH: ${{github.ref_name}}
